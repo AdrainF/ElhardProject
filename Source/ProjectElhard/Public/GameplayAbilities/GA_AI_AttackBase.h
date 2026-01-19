@@ -49,6 +49,11 @@ protected:
 	UPROPERTY()
 	UCombatComponent* CombatCompCached;
 
+	UPROPERTY()
+	float CurrentAttackDamage=-15.f;
+	UFUNCTION(BlueprintCallable)
+	void OnWeaponTrace(FGameplayEventData Payload);
+
 	/** Attack montages loaded from weapon */
 	UPROPERTY(EditDefaultsOnly, Category = "GAS|Ability AI Attack")
 	TObjectPtr<UAnimMontage> AttackAnimation;

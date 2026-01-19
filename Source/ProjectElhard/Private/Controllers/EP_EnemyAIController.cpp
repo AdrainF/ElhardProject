@@ -57,6 +57,10 @@ AEP_EnemyAIController::AEP_EnemyAIController()
 // Called when the AI perceives a target actor
 void AEP_EnemyAIController::OnTargetPerceived(AActor* Actor, FAIStimulus Stimulus)
 {
+	// Ignore perception if the owner character is dead
+	if (AICharacter->bIsDead)
+	{return;}
+	
 	const FAISenseID SenseID = Stimulus.Type;
 
 	// Get the IDs for each sense type
@@ -141,7 +145,7 @@ void AEP_EnemyAIController::HandleSight(AActor* Actor, const FAIStimulus& Stimul
 		{
 			SetTargetActor(Actor);
 			SetAIState(EEnemyState::Chasing);
-			AActor* OwnerActor=GetOwner();
+			
 
 			
 			checkf(CombatComponent, TEXT("Cannot get CombatComponent from AICharacter"));

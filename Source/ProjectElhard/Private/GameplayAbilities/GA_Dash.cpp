@@ -5,6 +5,8 @@
 
 #include "AbilitySystemComponent.h"
 #include "../../../../../../../Plugins/Runtime/GameplayAbilities/Source/GameplayAbilities/Public/Abilities/Tasks/AbilityTask_ApplyRootMotionConstantForce.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/RootMotionSource.h"
 #include "Kismet/GameplayStatics.h"
 #include "UObject/FastReferenceCollector.h"
@@ -29,8 +31,13 @@ void UGA_Dash::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	// Get the current velocity of the actor to determine the dash direction
-	FVector DashDirection = ActorInfo->OwnerActor->GetVelocity();
-
+	ACharacter* Character = Cast<ACharacter>(ActorInfo->OwnerActor);
+	FVector DashDirection = Character->GetCharacterMovement()->GetLastInputVector();
+	
+	if (!DashDirection.IsNearlyZero())
+	{
+		DashDirection = DashDirection.GetSafeNormal();
+	}
 	// Retrieve the skeletal mesh component of the actor (used for particle system attachment)
 	USkeletalMeshComponent* MeshComponent = ActorInfo->AvatarActor->
 		FindComponentByClass<USkeletalMeshComponent>();

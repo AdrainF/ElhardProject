@@ -9,6 +9,7 @@
 
 class UAbilitySystemComponent;
 class UEP_BasicAttributeSet;
+
 UCLASS()
 class PROJECTELHARD_API ACharacterBase : public ACharacter, public IAbilitySystemInterface
 {
@@ -19,6 +20,8 @@ public:
 	ACharacterBase();
 
 protected:
+
+	
 	/** Base attribute set (health, mana, etc.) for this player character */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UEP_BasicAttributeSet> BasicAttributeSet;
@@ -28,7 +31,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	bool bIsDead = false;
+	UFUNCTION(BlueprintCallable, Category = "Death")
+	virtual void OnDeath();
 	/** Required by IAbilitySystemInterface: returns the ability system component */
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	// Called every frame

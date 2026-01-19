@@ -23,6 +23,7 @@ class UAISenseConfig_Damage;
 class UStateTreeAIComponent;
 class AEnemyCharacterBase;
 class UCombatComponent;
+
 UCLASS()
 class PROJECTELHARD_API AEP_EnemyAIController : public AAIController
 {
@@ -32,6 +33,7 @@ public:
 	AEP_EnemyAIController();
 
 protected:
+
 	/** AI Perception component used for sensing the environment */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "AISense")
 	UAIPerceptionComponent* AIPerception = nullptr;

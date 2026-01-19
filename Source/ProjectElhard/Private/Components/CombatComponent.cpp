@@ -3,11 +3,12 @@
 
 #include "Components/CombatComponent.h"
 
+#include "Abilities/GameplayAbilityTypes.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "Weapons/EP_WeaponBase.h"
-#include "Weapons/Assets/EP_WeaponConfig_DataAsset.h"
+//#include "Weapons/EP_WeaponBase.h"
+//#include "Weapons/Assets/EP_WeaponConfig_DataAsset.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
@@ -44,26 +45,26 @@ void UCombatComponent::BeginPlay()
 	}
 }
 
-void UCombatComponent::EquipWeapon(AEP_WeaponBase* Weapon)
-{
-	if (!Weapon)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("EquipWeapon called with null weapon!"));
-		return;
-	}
-	EquippedWeapon=Weapon;
-	
-	if (CachedOwnerCharacter)
-	{
-		if (USkeletalMeshComponent* CharacterMesh=CachedOwnerCharacter->GetMesh())
-		{
-			if (Weapon->WeaponConfig){
-				const FName WeaponSocketName=Weapon->WeaponConfig->WeaponSocketName;
-				Weapon->AttachToComponent(CharacterMesh,FAttachmentTransformRules::SnapToTargetNotIncludingScale,WeaponSocketName);
-			}
-		}
-	}
-}
+// void UCombatComponent::EquipWeapon(AEP_WeaponBase* Weapon)
+// {
+// 	if (!Weapon)
+// 	{
+// 		UE_LOG(LogTemp, Warning, TEXT("EquipWeapon called with null weapon!"));
+// 		return;
+// 	}
+// 	EquippedWeapon=Weapon;
+// 	
+// 	if (CachedOwnerCharacter)
+// 	{
+// 		if (USkeletalMeshComponent* CharacterMesh=CachedOwnerCharacter->GetMesh())
+// 		{
+// 			if (Weapon->WeaponConfig){
+// 				const FName WeaponSocketName=Weapon->WeaponConfig->WeaponSocketName;
+// 				Weapon->AttachToComponent(CharacterMesh,FAttachmentTransformRules::SnapToTargetNotIncludingScale,WeaponSocketName);
+// 			}
+// 		}
+// 	}
+// }
 // Called every frame
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -71,16 +72,16 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	//Rotation
 	RotationTimeline.TickTimeline(DeltaTime);
 	// Weapon Trace
-	if (EquippedWeapon)
-	{
-		if (EquippedWeapon->IsStartWeaponTrace())
-		{
-			if (CachedOwnerCharacter)
-			{
-				EquippedWeapon->WeaponTrace(CachedOwnerCharacter);
-			}
-		}
-	}
+	// if (EquippedWeapon)
+	// {
+	// 	if (EquippedWeapon->IsStartWeaponTrace())
+	// 	{
+	// 		if (CachedOwnerCharacter)
+	// 		{
+	// 			EquippedWeapon->WeaponTrace(CachedOwnerCharacter);
+	// 		}
+	// 	}
+	// }
 }
 
 void UCombatComponent::SoftTargeting()

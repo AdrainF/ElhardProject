@@ -3,7 +3,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CombatComponent.h"
-#include "Weapons/EP_WeaponBase.h"
+//#include "Weapons/EP_WeaponBase.h"
 
 UGA_PrimaryAttackCombo::UGA_PrimaryAttackCombo()
 {
@@ -17,23 +17,30 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
     const FGameplayEventData* TriggerEventData)
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+    
+    // Cache Combat Component
+    const AActor* Owner = ActorInfo->AvatarActor.Get();
+    checkf(Owner, TEXT("UGA_PrimaryAttackCombo::ActivateAbility: Owner is null!"));
+    CombatCompCached = Owner->FindComponentByClass<UCombatComponent>();
+
+    if (!CombatCompCached)
+    {
+        EndAbility(Handle, ActorInfo, ActivationInfo, false, true);
+        return;
+    }
+    
+    // const AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
+    // if (!Weapon)
+    // {
+    //     EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+    //     return;
+    // }
 
     if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
         return;
 
-    // Cache Combat Component
-    const AActor* Owner = GetOwningActorFromActorInfo();
-    checkf(Owner, TEXT("UGA_PrimaryAttackCombo::ActivateAbility: Owner is null!"));
-    CombatCompCached = Owner->FindComponentByClass<UCombatComponent>();
-    
-    const AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
-    if (!Weapon)
-    {
-        EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-        return;
-    }
-    AttackMontages = Weapon->GetAttackAnimations();
-
+    //AttackMontages = Weapon->GetAttackAnimations();
+   
     AttackIndex = 0;
     bAttackBuffered = false;
     
@@ -51,12 +58,12 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
     // Weapon traces
     Task_StartTrace = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
         this, FGameplayTag::RequestGameplayTag("Event.WeaponTrace.Start"));
-    Task_StartTrace->EventReceived.AddDynamic(Weapon, &AEP_WeaponBase::StartWeaponTrace);
+    Task_StartTrace->EventReceived.AddDynamic(this, &UGA_PrimaryAttackCombo::OnWeaponTrace);
     Task_StartTrace->ReadyForActivation();
 
     Task_EndTrace = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
         this, FGameplayTag::RequestGameplayTag("Event.WeaponTrace.End"));
-    Task_EndTrace->EventReceived.AddDynamic(Weapon, &AEP_WeaponBase::StopWeaponTrace);
+    //Task_EndTrace->EventReceived.AddDynamic(Weapon, &AEP_WeaponBase::StopWeaponTrace);
     Task_EndTrace->ReadyForActivation();
 
     // Rotation Event
@@ -71,22 +78,25 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
 
 void UGA_PrimaryAttackCombo::PlayNextMontage()
 {
-    if (!CombatCompCached || AttackMontages.Num() == 0)
-        return;
-
-    if (AttackIndex >= AttackMontages.Num())
-        AttackIndex = 0;
-
-    UAnimMontage* MontageToPlay = AttackMontages[AttackIndex];
-    if (!MontageToPlay)
-        return;
+    // if (!CombatCompCached || AttackMontages.Num() == 0)
+    //     return;
+    //
+    // if (AttackIndex >= AttackMontages.Num())
+    // {
+    //     AttackIndex = 0;
+    // }
+    //
+    // UAnimMontage* MontageToPlay = AttackMontages[AttackIndex].Montage;
+    // CurrentAttackDamage= AttackMontages[AttackIndex].Damage;
+    // if (!MontageToPlay)
+    //     return;
 
     // Create animation task for this single montage
-    PlayMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-        this,
-        "PrimaryAttackMontage",
-        MontageToPlay
-    );
+    // PlayMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+    //     this,
+    //     "PrimaryAttackMontage",
+    //     MontageToPlay
+    // );
     CombatCompCached->SoftTargeting();
     PlayMontageTask->OnCompleted.AddDynamic(this, &UGA_PrimaryAttackCombo::OnMontageCompleted);
     PlayMontageTask->OnBlendOut.AddDynamic(this, &UGA_PrimaryAttackCombo::OnMontageBlendOut);
@@ -116,11 +126,12 @@ void UGA_PrimaryAttackCombo::ComboEndEventReceived(FGameplayEventData Payload)
             UAbilitySystemComponent* ASC = GetAbilitySystemComponentFromActorInfo();
             if (ASC && ASC->IsAnimatingAbility(this))
             {
-                ASC->CurrentMontageStop(0.3f);   
+              //  ASC->CurrentMontageStop(0.3f);
+                AttackIndex++;
+                PlayNextMontage();
             }
         }
-        AttackIndex++;
-        PlayNextMontage();
+        
     }
     else
     {
@@ -128,11 +139,19 @@ void UGA_PrimaryAttackCombo::ComboEndEventReceived(FGameplayEventData Payload)
     }
 }
 
+void UGA_PrimaryAttackCombo::OnWeaponTrace(FGameplayEventData Payload)
+{
+    // if (AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon())
+    // {
+    //     Weapon->StartWeaponTrace();
+    //     Weapon->CurrentDamage = CurrentAttackDamage; 
+    // }
+}
+
 void UGA_PrimaryAttackCombo::OnMontageCompleted()
 {
     if (bAttackBuffered)
     {
-        AttackIndex++;
         return;
     }
 
@@ -157,5 +176,17 @@ void UGA_PrimaryAttackCombo::EndAbility(
     bool bReplicateEndAbility,
     bool bWasCancelled)
 {
+    END_TASK_SAFE(Task_ComboStart);
+    END_TASK_SAFE(Task_ComboEnd);
+    END_TASK_SAFE(Task_StartTrace);
+    END_TASK_SAFE(Task_EndTrace);
+    END_TASK_SAFE(Task_Rotation);
+    END_TASK_SAFE(PlayMontageTask);
+
+    //  AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
+    // if (Weapon)
+    // {
+    //     Weapon->bStartWeaponTrace = false;
+    // }
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }

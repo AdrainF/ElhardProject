@@ -23,6 +23,7 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Combat")
 	UCombatComponent* CombatComp=nullptr;
 
+	virtual void OnDeath() override;
 	
 
 

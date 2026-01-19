@@ -4,10 +4,21 @@
 #include "Abilities/GameplayAbility.h"
 #include "GA_PrimaryAttackCombo.generated.h"
 
+
+// safe end task macro
+#define END_TASK_SAFE(TaskPtr) \
+do { \
+if ((TaskPtr) != nullptr) { \
+(TaskPtr)->EndTask(); \
+(TaskPtr) = nullptr; \
+} \
+} while (0)
+
 class UAbilityTask_PlayMontageAndWait;
 class UAbilityTask_WaitGameplayEvent;
 class UCombatComponent;
 class UAnimMontage;
+struct FWeaponAttackData;
 
 UCLASS()
 class PROJECTELHARD_API UGA_PrimaryAttackCombo : public UGameplayAbility
@@ -59,12 +70,17 @@ protected:
     UCombatComponent* CombatCompCached;
 
     /** Attack montages loaded from weapon */
-    UPROPERTY()
-    TArray<UAnimMontage*> AttackMontages;
+  //  UPROPERTY()
+//    TArray<FWeaponAttackData> AttackMontages;
 
     /** Current attack index */
     UPROPERTY()
     int32 AttackIndex = 0;
+
+    UPROPERTY()
+    float CurrentAttackDamage=0.f;
+    UFUNCTION(BlueprintCallable)
+    void OnWeaponTrace(FGameplayEventData Payload);
 
     /** Should next attack continue combo? */
     bool bAttackBuffered = false;
