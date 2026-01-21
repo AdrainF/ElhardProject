@@ -13,6 +13,10 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AVimodyz_002Easm_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fadrian_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FWebedic_003FVimodyz_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AVycafav_002Easm_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fadrian_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FDezuxik_003FVycafav_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AXyrimol_002Easm_002Fl_003A_002E_002E_003F_002E_002E_003FUsers_003Fadrian_003FAppData_003FLocal_003FTemp_003FSandboxFiles_003FTowogop_003FXyrimol_002Easm/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\adrian\.nuget\packages\magick.net-q16-hdri-anycpu\14.7.0\lib\net8.0\Magick.NET-Q16-HDRI-AnyCPU.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\adrian\.nuget\packages\magick.net-q16-hdri-anycpu\14.10.2\lib\net8.0\Magick.NET-Q16-HDRI-AnyCPU.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4c7e280b_002Dd546_002D40a9_002D9170_002D934d76555efc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

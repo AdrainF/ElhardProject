@@ -9,11 +9,11 @@ struct FWeaponBaseStats
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float BaseDamage;
+	float BaseDamage =0.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float AttackSpeed;
+	float AttackSpeed =0.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	float CritChance;
+	float CritChance =0.0f;
 };
