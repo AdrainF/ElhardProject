@@ -6,7 +6,7 @@
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "Components/CombatComponent.h"
-//#include "Weapons/EP_WeaponBase.h"
+#include "Items/Weapons/WeaponBase.h"
 
 UGA_AI_AttackBase::UGA_AI_AttackBase()
 {
@@ -27,13 +27,13 @@ void UGA_AI_AttackBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 	const AActor* Owner = GetOwningActorFromActorInfo();
 	checkf(Owner, TEXT("GA_AI_AttackBase::ActivateAbility: Owner is null!"));
 	CombatCompCached = Owner->FindComponentByClass<UCombatComponent>();
- //    
-	// const AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
-	// if (!Weapon)
-	// {
-	// 	EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-	// 	return;
-	// }
+   
+	const AWeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
+	if (!Weapon)
+	{
+		EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+		return;
+	}
 
 	// Weapon traces
 	Task_StartTrace = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
@@ -44,7 +44,7 @@ void UGA_AI_AttackBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 
 	Task_EndTrace = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
 		this, FGameplayTag::RequestGameplayTag("Event.WeaponTrace.End"));
-	//Task_EndTrace->EventReceived.AddDynamic(Weapon, &AEP_WeaponBase::StopWeaponTrace);
+	Task_EndTrace->EventReceived.AddDynamic(Weapon, &AWeaponBase::StopWeaponTrace);
 	Task_EndTrace->ReadyForActivation();
 
 	// Rotation Event
@@ -96,11 +96,11 @@ void UGA_AI_AttackBase::OnMontageBlendOut()
 
 void UGA_AI_AttackBase::OnWeaponTrace(FGameplayEventData Payload)
 {
-	// if (AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon())
-	// {
-	// 	Weapon->StartWeaponTrace();
-	// 	Weapon->CurrentDamage = CurrentAttackDamage; // tu ustawiasz dmg
-	// }
+	if (AWeaponBase* Weapon = CombatCompCached->GetEquippedWeapon())
+	{
+		Weapon->StartWeaponTrace();
+		Weapon->CurrentDamage = CurrentAttackDamage;
+	}
 }
 
 

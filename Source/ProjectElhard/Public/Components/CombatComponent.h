@@ -8,7 +8,7 @@
 #include "CombatComponent.generated.h"
 
 class UGameplayAbility;
-class AEP_WeaponBase;
+class AWeaponBase;
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTELHARD_API UCombatComponent : public UActorComponent
 {
@@ -41,8 +41,8 @@ protected:
 	
 	// Timeline
 	FTimeline RotationTimeline;
-	// UPROPERTY()
-	// TObjectPtr<AEP_WeaponBase> EquippedWeapon=nullptr;
+	UPROPERTY()
+	TObjectPtr<AWeaponBase> EquippedWeapon=nullptr;
 	UPROPERTY()
 	TObjectPtr<ACharacter> CachedOwnerCharacter=nullptr;
 
@@ -54,11 +54,11 @@ protected:
 
 public:
 
-//	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	//void EquipWeapon(AEP_WeaponBase* Weapon);
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void EquipWeapon(AWeaponBase* Weapon);
 
-	//UFUNCTION(Blueprintable,Category = "Weapon")
-	//AEP_WeaponBase* GetEquippedWeapon() const { return EquippedWeapon; }
+	UFUNCTION(Blueprintable,Category = "Weapon")
+	AWeaponBase* GetEquippedWeapon() const { return EquippedWeapon; }
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

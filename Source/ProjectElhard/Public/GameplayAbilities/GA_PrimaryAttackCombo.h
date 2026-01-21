@@ -70,8 +70,8 @@ protected:
     UCombatComponent* CombatCompCached;
 
     /** Attack montages loaded from weapon */
-  //  UPROPERTY()
-//    TArray<FWeaponAttackData> AttackMontages;
+    UPROPERTY()
+    TArray<FWeaponAttackData> AttackMontages;
 
     /** Current attack index */
     UPROPERTY()

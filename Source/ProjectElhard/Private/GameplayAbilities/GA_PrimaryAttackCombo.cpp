@@ -3,7 +3,8 @@
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CombatComponent.h"
-//#include "Weapons/EP_WeaponBase.h"
+#include "Items/Weapons/WeaponBase.h"
+
 
 UGA_PrimaryAttackCombo::UGA_PrimaryAttackCombo()
 {
@@ -29,17 +30,17 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
         return;
     }
     
-    // const AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
-    // if (!Weapon)
-    // {
-    //     EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
-    //     return;
-    // }
+    const AWeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
+    if (!Weapon)
+    {
+        EndAbility(Handle, ActorInfo, ActivationInfo, true, false);
+        return;
+    }
 
     if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
         return;
 
-    //AttackMontages = Weapon->GetAttackAnimations();
+    AttackMontages = Weapon->GetWeaponData()->AttackMontages;
    
     AttackIndex = 0;
     bAttackBuffered = false;
@@ -63,7 +64,7 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
 
     Task_EndTrace = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(
         this, FGameplayTag::RequestGameplayTag("Event.WeaponTrace.End"));
-    //Task_EndTrace->EventReceived.AddDynamic(Weapon, &AEP_WeaponBase::StopWeaponTrace);
+    Task_EndTrace->EventReceived.AddDynamic(Weapon, &AWeaponBase::StopWeaponTrace);
     Task_EndTrace->ReadyForActivation();
 
     // Rotation Event
@@ -78,25 +79,25 @@ void UGA_PrimaryAttackCombo::ActivateAbility(
 
 void UGA_PrimaryAttackCombo::PlayNextMontage()
 {
-    // if (!CombatCompCached || AttackMontages.Num() == 0)
-    //     return;
-    //
-    // if (AttackIndex >= AttackMontages.Num())
-    // {
-    //     AttackIndex = 0;
-    // }
-    //
-    // UAnimMontage* MontageToPlay = AttackMontages[AttackIndex].Montage;
-    // CurrentAttackDamage= AttackMontages[AttackIndex].Damage;
-    // if (!MontageToPlay)
-    //     return;
+    if (!CombatCompCached || AttackMontages.Num() == 0)
+        return;
+    
+    if (AttackIndex >= AttackMontages.Num())
+    {
+        AttackIndex = 0;
+    }
+    
+    UAnimMontage* MontageToPlay = AttackMontages[AttackIndex].Montage;
+    CurrentAttackDamage= AttackMontages[AttackIndex].Damage;
+    if (!MontageToPlay)
+        return;
 
     // Create animation task for this single montage
-    // PlayMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
-    //     this,
-    //     "PrimaryAttackMontage",
-    //     MontageToPlay
-    // );
+    PlayMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(
+        this,
+        "PrimaryAttackMontage",
+        MontageToPlay
+    );
     CombatCompCached->SoftTargeting();
     PlayMontageTask->OnCompleted.AddDynamic(this, &UGA_PrimaryAttackCombo::OnMontageCompleted);
     PlayMontageTask->OnBlendOut.AddDynamic(this, &UGA_PrimaryAttackCombo::OnMontageBlendOut);
@@ -141,11 +142,11 @@ void UGA_PrimaryAttackCombo::ComboEndEventReceived(FGameplayEventData Payload)
 
 void UGA_PrimaryAttackCombo::OnWeaponTrace(FGameplayEventData Payload)
 {
-    // if (AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon())
-    // {
-    //     Weapon->StartWeaponTrace();
-    //     Weapon->CurrentDamage = CurrentAttackDamage; 
-    // }
+    if (AWeaponBase* Weapon = CombatCompCached->GetEquippedWeapon())
+    {
+        Weapon->StartWeaponTrace();
+        Weapon->CurrentDamage = CurrentAttackDamage; 
+    }
 }
 
 void UGA_PrimaryAttackCombo::OnMontageCompleted()
@@ -183,10 +184,10 @@ void UGA_PrimaryAttackCombo::EndAbility(
     END_TASK_SAFE(Task_Rotation);
     END_TASK_SAFE(PlayMontageTask);
 
-    //  AEP_WeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
-    // if (Weapon)
-    // {
-    //     Weapon->bStartWeaponTrace = false;
-    // }
+     AWeaponBase* Weapon = CombatCompCached->GetEquippedWeapon();
+    if (Weapon)
+    {
+        Weapon->SetStartwWeaponTrace(false);
+    }
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
