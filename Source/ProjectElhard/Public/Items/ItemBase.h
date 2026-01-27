@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Core/Interfaces/InteractionInterface.h"
 #include "GameFramework/Actor.h"
 #include "ItemBase.generated.h"
 
 class UDA_ItemBase;
 UCLASS()
-class PROJECTELHARD_API AItemBase : public AActor
+class PROJECTELHARD_API AItemBase : public AActor, public IInteractionInterface
 {
 	GENERATED_BODY()
 	
@@ -17,15 +18,22 @@ public:
 	AItemBase();
 
 protected:
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Item Mesh")
 	UStaticMeshComponent* ItemMesh;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Item Base Data")
 	UDA_ItemBase* ItemDataAsset;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	// Interaction interface implementation
+	void Interact_Implementation(APawn* InteractingPawn);
+	
+	void PickUpItem(APawn* InteractingPawn);
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	
 };

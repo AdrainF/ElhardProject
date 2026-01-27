@@ -4,6 +4,8 @@
 #include "Characters/PlayerCharacter.h"
 #include "AbilitySystemComponent.h"
 #include "Components/CombatComponent.h"
+#include "Components/InteractionComponent.h"
+#include "Components/ItemContainerComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -20,6 +22,9 @@ APlayerCharacter::APlayerCharacter()
 
 	
 	CombatComp = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
+	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("InteractionComponent"));
+	//Change for InventoryComponent later
+	ItemContainerComp = CreateDefaultSubobject<UItemContainerComponent>(TEXT("ItemContainerComponent"));
 }
 
 void APlayerCharacter::BeginPlay()

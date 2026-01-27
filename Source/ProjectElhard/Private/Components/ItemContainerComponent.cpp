@@ -32,3 +32,25 @@ void UItemContainerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	// ...
 }
 
+TArray<UDA_ItemBase*> UItemContainerComponent::GetItems()
+{
+	return Items;
+}
+
+void UItemContainerComponent::AddItem(UDA_ItemBase* NewItem)
+{
+	Items.Add(NewItem);
+}
+
+void UItemContainerComponent::SwapItems(int32 IndexA, int32 IndexB)
+{
+}
+
+void UItemContainerComponent::RemoveItem(int32 IndexA)
+{
+}
+
+void UItemContainerComponent::FindEmptySlot()
+{
+}
+

@@ -12,6 +12,8 @@ class UCameraComponent;
 class USpringArmComponent;
 class UCombatComponent;
 class UGameplayAbility;
+class UInteractionComponent;
+class UItemContainerComponent;
 /**
  * 
  */
@@ -28,10 +30,18 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	TObjectPtr<USpringArmComponent> CameraBoom = nullptr;
-
+	// Combat Component
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Combat")
 	UCombatComponent* CombatComp=nullptr;
+	// Interaction Component
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interaction")
+	UInteractionComponent* InteractionComp=nullptr;
+	//Change for InventoryComponent later
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Inventory")
+	UItemContainerComponent * ItemContainerComp = nullptr;
 
+	
+	
 	virtual void BeginPlay() override;
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Ability Dash")

@@ -3,6 +3,9 @@
 
 #include "Items/ItemBase.h"
 
+#include "IDetailTreeNode.h"
+#include "Components/ItemContainerComponent.h"
+
 // Sets default values
 AItemBase::AItemBase()
 {
@@ -18,6 +21,21 @@ void AItemBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
+
+void AItemBase::Interact_Implementation(APawn* InteractingPawn)
+{
+    PickUpItem(InteractingPawn);
+}
+
+void AItemBase::PickUpItem(APawn* InteractingPawn)
+{
+	if(!InteractingPawn) return;
+	UItemContainerComponent* ItemContainer = InteractingPawn->FindComponentByClass<UItemContainerComponent>();
+	if(!ItemContainer) return;
+	ItemContainer->AddItem(ItemDataAsset);
+	this->Destroy();
+}
+
 
 // Called every frame
 void AItemBase::Tick(float DeltaTime)

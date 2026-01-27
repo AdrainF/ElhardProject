@@ -74,21 +74,10 @@ void AWeaponBase::WeaponTrace(ACharacter* OwnerCharacter)
 				CurrentDamage);
 				// Apply effect to the target
 				ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-
-				// // Determine hit direction for animation
-				// EHitDirection DirectionValue = HitReaction(HitActor, Hit.ImpactPoint);
-				// FString EnumValueAsString = UEnum::GetValueAsString(DirectionValue);
-				//
-				// // Trigger hit reaction on enemy
-				// if (ASEnemyBase* EnemyActor = Cast<ASEnemyBase>(HitActor))
-				// {
-				// 	EnemyActor->HitReaction(DirectionValue);
-				// 	UE_LOG(LogTemp, Log, TEXT("Hit direction: %s"), *EnumValueAsString);
-				// }
-
 				// Save the hit actor to prevent multiple hits in a single animation
 				HitActors.Add(HitActor);
 			}
 		}
+	
 	}
 }
