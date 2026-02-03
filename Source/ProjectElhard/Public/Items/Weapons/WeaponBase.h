@@ -30,7 +30,7 @@ public:
 	USceneComponent* End_Collision;
 	// Getter for WeaponData
 	UFUNCTION(BlueprintCallable)
-	UDA_WeaponBase* GetWeaponData() const { return Cast<UDA_WeaponBase>(ItemDataAsset); }
+	UDA_WeaponBase* GetWeaponData() const { return Cast<UDA_WeaponBase>(ItemDataAsset.ItemAsset); }
     // Damage value set from Ability
 	UPROPERTY()
 	float CurrentDamage=0.f;

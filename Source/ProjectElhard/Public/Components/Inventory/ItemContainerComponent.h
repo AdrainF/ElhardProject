@@ -4,9 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Items/ItemBase.h"
+#include "Items/FItem.h"
 #include "ItemContainerComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInventoryUpdated);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class PROJECTELHARD_API UItemContainerComponent : public UActorComponent
@@ -19,7 +20,7 @@ public:
 protected:
 	// Items contained in this container
 	UPROPERTY(EditAnywhere, Category = "Item Container")
-	TArray<UDA_ItemBase*> Items;
+	TArray<FItem> Items;
 	// Called when the game starts
 	virtual void BeginPlay() override;
 public:	
@@ -28,17 +29,21 @@ public:
 
 	// Getter for Items
 	UFUNCTION(BlueprintCallable)
-	TArray<UDA_ItemBase*> GetItems();
+	TArray<FItem>& GetItems();
 	// Adds a new item to the container
 	UFUNCTION(BlueprintCallable)
-	void AddItem(UDA_ItemBase* NewItem);
+	void AddItem(const FItem& NewItem);
 	// Swaps two items in the container by their indices
-	UFUNCTION(Blueprintable)
+	UFUNCTION(BlueprintCallable)
 	void SwapItems(int32 IndexA, int32 IndexB);
 	// Removes an item from the container by its index
 	UFUNCTION(BlueprintCallable)
 	void RemoveItem(int32 IndexA);
 	// Finds the first empty slot in the container
 	UFUNCTION(BlueprintCallable)
-	void FindEmptySlot();
+	void FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex , bool& bFound);
+
+	// Delegate to notify when the inventory is updated
+	UPROPERTY(BlueprintAssignable, Category = "Inventory")
+	FOnInventoryUpdated OnInventoryUpdated;
 };

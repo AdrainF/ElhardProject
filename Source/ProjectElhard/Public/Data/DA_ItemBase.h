@@ -12,12 +12,12 @@
  * 
  */
 
-UCLASS()
+UCLASS(BlueprintType)
 class PROJECTELHARD_API UDA_ItemBase : public UDataAsset
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	// The name of the item
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item Base Data", meta = (AllowPrivateAccess = "true"))
 	FName ItemName;

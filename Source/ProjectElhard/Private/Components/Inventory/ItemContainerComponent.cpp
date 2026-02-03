@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/ItemContainerComponent.h"
+#include "Components/Inventory/ItemContainerComponent.h"
+
+#include "Data/DA_ItemBase.h"
 
 // Sets default values for this component's properties
 UItemContainerComponent::UItemContainerComponent()
@@ -32,25 +34,47 @@ void UItemContainerComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	// ...
 }
 
-TArray<UDA_ItemBase*> UItemContainerComponent::GetItems()
+TArray<FItem>& UItemContainerComponent::GetItems()
 {
 	return Items;
 }
 
-void UItemContainerComponent::AddItem(UDA_ItemBase* NewItem)
+void UItemContainerComponent::AddItem( const FItem& NewItem)
 {
 	Items.Add(NewItem);
 }
 
 void UItemContainerComponent::SwapItems(int32 IndexA, int32 IndexB)
 {
+	
+	Items.Swap(IndexA, IndexB);
+	OnInventoryUpdated.Broadcast();
 }
 
 void UItemContainerComponent::RemoveItem(int32 IndexA)
 {
 }
 
-void UItemContainerComponent::FindEmptySlot()
+void UItemContainerComponent::FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex, bool& bFound)
 {
+	
+	for (int32 i = 0; i < Items.Num(); ++i)
+	{
+		
+		const FItem& Item = Items[i];
+		
+		if (Item.ItemAsset == ItemDA && Item.Quantity < Item.ItemAsset->MaxStackSize)
+		{
+			OutIndex= i;
+			bFound=true;
+			return;
+		}
+
+		
+	}
+	bFound=false;
+	OutIndex=INDEX_NONE;
 }
+
+
 

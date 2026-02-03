@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FItem.h"
 #include "Core/Interfaces/InteractionInterface.h"
 #include "GameFramework/Actor.h"
 #include "ItemBase.generated.h"
 
-class UDA_ItemBase;
+
 UCLASS()
 class PROJECTELHARD_API AItemBase : public AActor, public IInteractionInterface
 {
@@ -22,7 +23,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Item Mesh")
 	UStaticMeshComponent* ItemMesh;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category="Item Base Data")
-	UDA_ItemBase* ItemDataAsset;
+	FItem ItemDataAsset;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

@@ -4,7 +4,7 @@
 #include "Items/ItemBase.h"
 
 #include "IDetailTreeNode.h"
-#include "Components/ItemContainerComponent.h"
+#include "Components/Inventory/ItemContainerComponent.h"
 
 // Sets default values
 AItemBase::AItemBase()

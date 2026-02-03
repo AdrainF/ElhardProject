@@ -13,7 +13,7 @@ class USpringArmComponent;
 class UCombatComponent;
 class UGameplayAbility;
 class UInteractionComponent;
-class UItemContainerComponent;
+class UInventoryComponent;
 /**
  * 
  */
@@ -38,7 +38,7 @@ protected:
 	UInteractionComponent* InteractionComp=nullptr;
 	//Change for InventoryComponent later
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Inventory")
-	UItemContainerComponent * ItemContainerComp = nullptr;
+	UInventoryComponent * InventoryComp = nullptr;
 
 	
 	
