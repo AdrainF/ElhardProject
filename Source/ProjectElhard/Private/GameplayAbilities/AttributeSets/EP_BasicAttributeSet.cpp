@@ -3,6 +3,8 @@
 
 #include "GameplayAbilities/AttributeSets/EP_BasicAttributeSet.h"
 #include "GameplayEffectExtension.h"
+#include "Characters/CharacterBase.h"
+
 UEP_BasicAttributeSet::UEP_BasicAttributeSet()
 {
 }
@@ -16,7 +18,6 @@ void UEP_BasicAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffe
 	{
 		float NewHealth = GetHealth();
 		float Delta = Data.EvaluatedData.Magnitude; // The amount added or removed
-		//OnHealthChange.Broadcast(nullptr, this, NewHealth, Delta); // Broadcast health change
 		UE_LOG(LogTemp, Log, TEXT("Health changed: %f (Delta: %f)"), NewHealth, Delta);
 	}
 }
@@ -43,7 +44,12 @@ void UEP_BasicAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 	if (NewValue <= 0.f && Attribute == GetHealthAttribute())
 	{
 		// Trigger OnDeath event
-		OnDeath.Broadcast();
+		//OnDeath.Broadcast();
+		ACharacterBase * OwningCharacter = Cast<ACharacterBase>(GetOwningActor());
+		if (OwningCharacter)
+		{
+			OwningCharacter->OnDeath();
 		}
+	}
 	
 }

@@ -20,9 +20,7 @@ UItemContainerComponent::UItemContainerComponent()
 void UItemContainerComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// ...
-	
 }
 
 
@@ -30,7 +28,6 @@ void UItemContainerComponent::BeginPlay()
 void UItemContainerComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 	// ...
 }
 
@@ -46,7 +43,6 @@ void UItemContainerComponent::AddItem( const FItem& NewItem)
 
 void UItemContainerComponent::SwapItems(int32 IndexA, int32 IndexB)
 {
-	
 	Items.Swap(IndexA, IndexB);
 	OnInventoryUpdated.Broadcast();
 }
@@ -57,10 +53,8 @@ void UItemContainerComponent::RemoveItem(int32 IndexA)
 
 void UItemContainerComponent::FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex, bool& bFound)
 {
-	
 	for (int32 i = 0; i < Items.Num(); ++i)
 	{
-		
 		const FItem& Item = Items[i];
 		
 		if (Item.ItemAsset == ItemDA && Item.Quantity < Item.ItemAsset->MaxStackSize)
@@ -69,8 +63,6 @@ void UItemContainerComponent::FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutInde
 			bFound=true;
 			return;
 		}
-
-		
 	}
 	bFound=false;
 	OutIndex=INDEX_NONE;

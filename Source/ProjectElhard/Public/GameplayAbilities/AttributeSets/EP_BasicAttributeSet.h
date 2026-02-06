@@ -7,14 +7,7 @@
 #include "AttributeSet.h"
 #include "EP_BasicAttributeSet.generated.h"
 
-// DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(
-// 	FOnHealthChange,
-// 	AActor*, InstigatorActor,
-// 	UEP_BasicAttributeSet*, OwningComp,
-// 	float, NewHealth,
-// 	float, Delta
-// );
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 /**
  * 
  */
@@ -30,10 +23,10 @@ public:
 	// UPROPERTY(BlueprintAssignable)
 	// FOnHealthChange OnHealthChange;
 
-	UPROPERTY(BlueprintAssignable, Category="Events")
-	FOnDeath OnDeath;
+	// UPROPERTY(BlueprintAssignable, Category="Events")
+	// FOnDeath OnDeath;
 	//Health Attribute
-	UPROPERTY(BlueprintReadOnly,Category="Attributes")
+	UPROPERTY(BlueprintReadOnly ,Category="Attributes")
 	FGameplayAttributeData Health=100;
 	ATTRIBUTE_ACCESSORS_BASIC(UEP_BasicAttributeSet, Health);
 	

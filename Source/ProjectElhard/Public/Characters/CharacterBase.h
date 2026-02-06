@@ -23,8 +23,8 @@ protected:
 
 	
 	/** Base attribute set (health, mana, etc.) for this player character */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UEP_BasicAttributeSet> BasicAttributeSet;
+	UPROPERTY(BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = true))
+	const UEP_BasicAttributeSet* BasicAttributeSet;
 	/** Ability system component to manage abilities and attributes */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GAS", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UAbilitySystemComponent> AbilitySystem = nullptr;

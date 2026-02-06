@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class PROJECTELHARD_API UInventoryComponent : public UItemContainerComponent
 {
 	GENERATED_BODY()

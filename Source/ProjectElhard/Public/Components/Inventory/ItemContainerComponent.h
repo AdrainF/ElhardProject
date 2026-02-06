@@ -40,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RemoveItem(int32 IndexA);
 	// Finds the first empty slot in the container
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(Blueprintable)
 	void FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex , bool& bFound);
 
 	// Delegate to notify when the inventory is updated

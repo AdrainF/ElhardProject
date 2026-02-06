@@ -14,6 +14,7 @@ class UCombatComponent;
 class UGameplayAbility;
 class UInteractionComponent;
 class UInventoryComponent;
+class UCurrencyComponent;
 /**
  * 
  */
@@ -32,16 +33,17 @@ protected:
 	TObjectPtr<USpringArmComponent> CameraBoom = nullptr;
 	// Combat Component
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Combat")
-	UCombatComponent* CombatComp=nullptr;
+	TObjectPtr<UCombatComponent> CombatComp=nullptr;
 	// Interaction Component
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Interaction")
-	UInteractionComponent* InteractionComp=nullptr;
+	TObjectPtr<UInteractionComponent> InteractionComp=nullptr;
 	//Change for InventoryComponent later
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Inventory")
-	UInventoryComponent * InventoryComp = nullptr;
+	TObjectPtr<UInventoryComponent> InventoryComp = nullptr;
+	// Currency Component
+	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="Currency")
+	TObjectPtr<UCurrencyComponent> CurrencyComp=nullptr;
 
-	
-	
 	virtual void BeginPlay() override;
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GAS|Ability Dash")
