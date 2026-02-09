@@ -36,9 +36,11 @@ TArray<FItem>& UItemContainerComponent::GetItems()
 	return Items;
 }
 
-void UItemContainerComponent::AddItem( const FItem& NewItem)
+void UItemContainerComponent::AddItem( const FItem& NewItem ,  int32 index)
 {
-	Items.Add(NewItem);
+	Items[index].ItemAsset=NewItem.ItemAsset;
+	Items[index].Quantity=NewItem.Quantity;
+	OnInventoryUpdated.Broadcast();
 }
 
 void UItemContainerComponent::SwapItems(int32 IndexA, int32 IndexB)
@@ -49,6 +51,12 @@ void UItemContainerComponent::SwapItems(int32 IndexA, int32 IndexB)
 
 void UItemContainerComponent::RemoveItem(int32 IndexA)
 {
+	if (Items.IsValidIndex(IndexA))
+	{
+		Items[IndexA].Quantity=0;
+		Items[IndexA].ItemAsset=nullptr;
+		OnInventoryUpdated.Broadcast();
+	}
 }
 
 void UItemContainerComponent::FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex, bool& bFound)
@@ -57,7 +65,7 @@ void UItemContainerComponent::FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutInde
 	{
 		const FItem& Item = Items[i];
 		
-		if (Item.ItemAsset == ItemDA && Item.Quantity < Item.ItemAsset->MaxStackSize)
+		if (Item.ItemAsset == nullptr)
 		{
 			OutIndex= i;
 			bFound=true;

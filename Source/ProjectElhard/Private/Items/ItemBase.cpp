@@ -32,7 +32,7 @@ void AItemBase::PickUpItem(APawn* InteractingPawn)
 	if(!InteractingPawn) return;
 	UItemContainerComponent* ItemContainer = InteractingPawn->FindComponentByClass<UItemContainerComponent>();
 	if(!ItemContainer) return;
-	ItemContainer->AddItem(ItemDataAsset);
+	ItemContainer->AddItem(ItemDataAsset,0);
 	this->Destroy();
 }
 

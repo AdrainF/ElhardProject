@@ -32,7 +32,7 @@ public:
 	TArray<FItem>& GetItems();
 	// Adds a new item to the container
 	UFUNCTION(BlueprintCallable)
-	void AddItem(const FItem& NewItem);
+	void AddItem(const FItem& NewItem,  int32 index);
 	// Swaps two items in the container by their indices
 	UFUNCTION(BlueprintCallable)
 	void SwapItems(int32 IndexA, int32 IndexB);
@@ -40,7 +40,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RemoveItem(int32 IndexA);
 	// Finds the first empty slot in the container
-	UFUNCTION(Blueprintable)
+	UFUNCTION(BlueprintCallable)
 	void FindEmptySlot(UDA_ItemBase* ItemDA, int32& OutIndex , bool& bFound);
 
 	// Delegate to notify when the inventory is updated
